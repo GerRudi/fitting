@@ -139,8 +139,7 @@ var dyes = {
 137: ["White Smoke", 1, '#f5f5f5'],
 138: ["Yellow", 1, '#ffff00'],
 139: ["Yellow Green", 1, '#9acd32'],
-140: ["St Patrick's Green", 1, '#00cf00']
-
+140: ["St Patrick's Green", 1, '#00cf00'],
 512: ["Purple Pinstripe", 4, 0],
 513: ["Brown Lined", 4, 1],
 514: ["Blue Striped", 5, 0],
