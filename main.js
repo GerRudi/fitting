@@ -440,7 +440,7 @@ function update_skins() {
 	var sa = skins[cur_class].skins
 	for (var i = 0; i < sa.length; i++) {
 		var t = sa[i]
-		if (t.file != 'playerskins') continue // fix pls?
+		//if (t.file != 'playerskins') continue // fix pls?
 		s.append($('<div>').text(t.id).data('id', t.index))
 	}
 }
