@@ -21,11 +21,11 @@ body {
 }
 
 #clsel {
-	width: 470px;
+	width: 336px;
 }
 
 #skinsel {
-	width: 268px;
+	width: 402px;
 }
 
 .sel div {
@@ -167,4 +167,8 @@ hr {
 	font-size: 12px;
 	padding: 2px 4px;
 	background: #ccc;
+}
+
+p {
+	margin: 10px;
 }
