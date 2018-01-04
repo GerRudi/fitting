@@ -190,56 +190,35 @@ function charImage(id, scale, direction, blush, char_class, char_skin){
 	var xi_max = 8
 	var yi_max = 8
 	var temp = document.createElement('canvas');
-	//if (t.file != 'playerskins') continue // fix pls?
-	//var i = (char_skin !== -1) ? char_skin : skins[char_class].index;
-	console.log('char_class: '+char_class)
-	console.log('char_skin: '+char_skin)
-	//console.log('skins[char_class].skins: '+skins[char_class].skins)
-	//console.log('skins[char_class].skins[char_skin]: '+skins[char_class].skins[char_skin])
-	//console.log('id: '+id)
-	//console.log('length: '+skins[char_class].skins.length)
 	var sa = skins[char_class].skins
-	for (var i = 0; i < sa.length; i++) {
-	var t = sa[i]
-	if (t.file == 'playerskins16' && t.index==char_skin)
+	for (var i = 0; i < sa.length; i++) 
 	{
-		temp.width = (scale * 16 + 2) * 3;
-		temp.height = scale * 16 + 2;
-		console.log("16")
-		large_skin = true
-		break
-	
-	}	
-		else{
+		var t = sa[i]
+		if (t.file == 'playerskins16' && t.index==char_skin)
+		{
+			temp.width = (scale * 16 + 2) * 3;
+			temp.height = scale * 16 + 2;
+			large_skin = true;
+			break;
+		}	
+		else
+		{
 			if (t.file == 'playerskins' && t.index==char_skin)
 			{
 				temp.width = (scale * 8 + 2) * 3;
 				temp.height = scale * 8 + 2;
-				large_skin = false
-				console.log("8")
-				break
+				large_skin = false;
+				break;
 			}
-			else{
+			else
+			{
 				temp.width = (scale * 8 + 2) * 3;
 				temp.height = scale * 8 + 2;
-				large_skin = false
-
-			}
-			
+				large_skin = false;
+			}		
 		}
 	}
 	
-	//console.log('skins[char_class].skins[char_skin].file: '+skins[char_class].skins[char_skin].file)//max-index rogue: 26
-	//console.log('char_class: '&char_class)
-	//console.log('char_class: '&char_class)
-	/*
-	var sa = skins[char_class].skins
-	for (var i = 0; i < sa.length; i++) {
-	var t = sa[i]
-	if (t.file != 'playerskins') continue // fix pls?
-	}
-	*/
-
 	var c = temp.getContext('2d');
 
 	c.save();
@@ -248,7 +227,6 @@ function charImage(id, scale, direction, blush, char_class, char_skin){
 		c.translate(84, 0)
 		xi_max = 16
 		yi_max = 16
-		console.log("LARGE")
 	}
 	else
 	{
@@ -280,7 +258,6 @@ function charImage(id, scale, direction, blush, char_class, char_skin){
 		{
 			var sh = (char_skin !== -1) ? 'playersSkins' : 'players';	
 		}
-		
 		
 		var spr = sprites[sh][i];
 		var mask = sprites[sh + 'Mask'][i];
@@ -318,11 +295,9 @@ function charImage(id, scale, direction, blush, char_class, char_skin){
 	}
 	
 	
-	
 	if(large_skin)
 	{
 		var x = (direction == 2) ? scale * 15 : 0;
-		console.log("LARGE")
 	}
 	else
 	{
@@ -336,39 +311,36 @@ function charImage(id, scale, direction, blush, char_class, char_skin){
 	
 	if(large_skin)
 	{
-		if (cur_frame == 4) { // attacking, frame 2//16x16 elefant
-		if(direction == 2)
-		{
-			x-=scale*15			
-		}
-		else
-		{
-			if(direction == 0)
+		if (cur_frame == 4) 
+		{ // attacking, frame 2
+			if(direction == 2)
 			{
-				x+=scale*15		
+				x-=scale*15;			
 			}
 			else
 			{
-				x= scale * 8			
-			}	
-		}	
-			
-		pastesprite(id + 1, x);
-	}
-		console.log("LARGE")
+				if(direction == 0)
+				{
+					x+=scale*15;	
+				}
+				else
+				{
+					x= scale * 8;			
+				}	
+			}		
+			pastesprite(id + 1, x);
+		}
 	}
 	else
 	{
 		if (cur_frame == 4) { // attacking, frame 2
 		x = (direction == 2) ? -scale : scale * 8;
 		pastesprite(id + 1, x);
-	};	
+		};	
 	
 	
 	}
-	
-
-	c.restore();
+		c.restore();
 
 	// gradient + blush (had to do by hand because there's no actual "substract" blending, d'oh)
 	var d = c.getImageData(0, 0, c.canvas.width, c.canvas.height);
@@ -433,6 +405,7 @@ function allframe(scale){
 	scale = scale || 5;
 
 	var c = abctx;
+	c.globalCompositeOperation="destination-out";
 	c.clearRect(0, 0, c.canvas.width, c.canvas.height);
 
 	// get sorted list of class IDs
@@ -446,8 +419,8 @@ function allframe(scale){
 	// create sprites for each class and skin
 	var currentChar;
 	var x0 = 8, y0 = 8;
+	var x1 = 16, y1 = 8;
 	c.save();
-	c.globalCompositeOperation = 'destination-over';
 	for (var i = 0; i < classesCount; i++){
 		currentChar = charImage(0, scale, 0, 0, classIds[i], -1);
 		var w = currentChar.width / 3, h = currentChar.height;
@@ -458,17 +431,51 @@ function allframe(scale){
 			w, 0, w, h
 		);
 		var skinsCount = skins[classIds[i]].skins.length;
-		for (var j = 0; j < skinsCount; j++){
-			currentChar = charImage(0, scale, 0, 0, classIds[i], skins[classIds[i]].skins[j].index);
+		
+		//16x16
+		for (var j = 0; j < skinsCount; j++)
+		{
+			if(skins[classIds[i]].skins[j].file =='playerskins16')
+			{
+				currentChar = charImage(0, 2.5, 0, 0, classIds[i], skins[classIds[i]].skins[j].index);
+				w=currentChar.width/2;
+				h = currentChar.height;
+				console.log("LARGE SKIP!!!!!");
+				var e = -76 + (i*48)
+				//r1 = -76
+				//r2 = -28
+				//r3 = 20 
+				//+48
+				c.putImageData(
+					currentChar,
+					e,
+					((h * (j + 1)) + ((j + 1) * 6)) + y1,
+					w+16, 0, w, h
+				);			
+			}	
+			
+		}
+		//8x8
+		for (var j = 0; j < skinsCount; j++)
+		{
+			if(skins[classIds[i]].skins[j].file.endsWith('skins'))
+			{
+			currentChar = charImage(0, scale, 0, 0, classIds[i], skins[classIds[i]].skins[j].index);//SKINS16x16todo
 			w = currentChar.width / 3
 			h = currentChar.height;
+			
+				
 			c.putImageData(
 				currentChar,
 				((w * (i - 1)) + (i * 6)) + x0,
 				((h * (j + 1)) + ((j + 1) * 6)) + y0,
 				w, 0, w, h
-			);
-		}
+			);								
+			}			
+		}		
+
+
+		
 	}
 	c.restore();
 
@@ -559,7 +566,6 @@ function update_skins() {
 	var sa = skins[cur_class].skins
 	for (var i = 0; i < sa.length; i++) {
 		var t = sa[i]
-		//if (t.file != 'playerskins') continue // fix pls?
 		s.append($('<div>').text(t.id).data('id', t.index))
 	}
 }
