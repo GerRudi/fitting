@@ -186,35 +186,26 @@ function charImage(id, scale, direction, blush, char_class, char_skin){
 	blush = blush || 0;
 	char_class = char_class || cur_class;
 	char_skin = typeof char_skin != 'undefined' ? char_skin : cur_skin;
-	var large_skin = false
-	var xi_max = 8
-	var yi_max = 8
 	var temp = document.createElement('canvas');
 	var sa = skins[char_class].skins
 	var skinsize = 8;
-	
 	for (var i = 0; i < sa.length; i++) 
 	{
-		var t = sa[i]
-		if (t.file == 'playerskins16' && t.index==char_skin) //char_skin is a 16x16 skin
+		if (sa[i].file == 'playerskins16' && sa[i].index==char_skin) //char_skin is a 16x16 skin
 		{
 			skinsize = 16;
-			large_skin = true;
 			break;
 		}	
 	}
 	temp.width = (scale * skinsize + 2) * 3;
 	temp.height = scale * skinsize + 2;
-	
-	
-	
-	
+
 	var c = temp.getContext('2d');
 
 	c.save();
 	if(skinsize == 16)
 	{
-		c.translate(84, 0)
+		c.translate(84, 0);
 	}
 	else
 	{
@@ -340,7 +331,7 @@ function frame(id, scale) {
 		ftimer = 0;
 	}
 }
-
+//All-at-once preview
 function allframe(scale){
 	scale = scale || 5;
 
@@ -361,7 +352,7 @@ function allframe(scale){
 	var x0 = 8, y0 = 8;
 	c.save();
 	for (var i = 0; i < classesCount; i++){
-		currentChar = charImage(0, scale, 0, 0, classIds[i], -1);
+		currentChar = charImage(0, scale, 0, 0, classIds[i], -1); //default skins of each class
 		var w = currentChar.width / 3, h = currentChar.height;
 		c.putImageData(
 			currentChar,
@@ -372,10 +363,10 @@ function allframe(scale){
 		var skinsCount = skins[classIds[i]].skins.length;
 		for (var j = 0; j < skinsCount; j++)
 		{
-			if(skins[classIds[i]].skins[j].file =='playerskins16')
+			if(skins[classIds[i]].skins[j].file =='playerskins16')//16x16 skins of each class
 			{
 				currentChar = charImage(0, scale/2, 0, 0, classIds[i], skins[classIds[i]].skins[j].index);
-				w=currentChar.width/3;
+				w = currentChar.width / 3;
 				h = currentChar.height;
 				c.putImageData(
 					currentChar,
@@ -386,8 +377,8 @@ function allframe(scale){
 			}
 			else
 			{
-				currentChar = charImage(0, scale, 0, 0, classIds[i], skins[classIds[i]].skins[j].index);
-				w = currentChar.width / 3
+				currentChar = charImage(0, scale, 0, 0, classIds[i], skins[classIds[i]].skins[j].index); //8x8 skins of each class
+				w = currentChar.width / 3;
 				h = currentChar.height;
 				c.putImageData(
 					currentChar,
@@ -395,7 +386,6 @@ function allframe(scale){
 					((h * (j + 1)) + ((j + 1) * 6)) + y0,
 					w, 0, w, h
 				);			
-				
 			}
 		}
 	}
